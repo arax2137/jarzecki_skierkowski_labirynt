@@ -1,6 +1,7 @@
-#include "add_char.h"
+#include "fhandling.h"
 
 struct size mazeSize(FILE *in){
+
 
 	struct size s;
 
@@ -26,7 +27,7 @@ struct size mazeSize(FILE *in){
 
 
 int replaceChr(FILE* in, int y, int x, char a, struct size s) {
-	int pos = y * (s.x + 1) + x;
+	int pos = y * (s.x + 2) + x;
 	int l = fseek(in, (long)pos, SEEK_SET);
 	
 
@@ -38,10 +39,14 @@ int replaceChr(FILE* in, int y, int x, char a, struct size s) {
 
 
 char getChr(FILE* in, int y, int x, struct size s){
-	int pos = y * (s.x+1) + x;
+	int pos = y * (s.x + 2) + x;
 	int l = fseek(in, (long)pos, SEEK_SET);
 	int c = fgetc(in);
 
 	return c;
 
+}
+
+void resetPointer(FILE* f) {
+	fseek(f, 0, SEEK_SET);
 }

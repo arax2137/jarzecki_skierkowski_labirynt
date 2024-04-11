@@ -1,18 +1,23 @@
 #include "macro.h"
-#include "add_char.h"
+#include "fhandling.h"
+#include "copy_file.h"
 
 
 
 
 int main(){
 	
-	FILE *in = fopen("maze.txt", "r+");
+	char* name = "maze.txt";
+
+	FILE* f = copy_file(name);
+
+	resetPointer(f);
+	struct size s = mazeSize(f);
+	printf("x - %d, y - %d\n", s.x, s.y);
 	
-	struct size s = mazeSize(in);
-	//printf("x - %d, y - %d", s.x, s.y);
 	
-	replaceChr(in, 39, 40, 'K', s);
-	//printf("%c", getChr(in, 21, 25, s));
+	//replaceChr(f, 39, 40, 'V', s);
+	printf("%c", getChr(f, 39, 40, s));
 
 	
 

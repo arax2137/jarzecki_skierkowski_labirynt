@@ -15,3 +15,8 @@ int replaceChr(FILE* in, int y, int x, char a, struct size s);
 Zwraca znak na danej pozycji
 */
 char getChr(FILE* in, int y, int x, struct size s);
+
+/*
+Resetuje wskaznik do pozycji poczatkowej pliku 
+*/
+void resetPointer(FILE* f);
