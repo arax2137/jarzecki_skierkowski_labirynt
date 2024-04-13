@@ -11,8 +11,8 @@ int main(){
 	FILE* f = copy_file(name);
 
 	resetPointer(f);
-	struct size s = mazeSize(f);
-	printf("x - %d, y - %d\n", s.x, s.y);
+	struct maze s = mazeData(f);
+	printf("x - %d, y - %d\n start - %d/%d\n koniec - %d/%d", s.size_x, s.size_y, s.start_x, s.start_y, s.end_x, s.end_y);
 	
 	
 	replaceChr(f, 39, 40, 'V', s);

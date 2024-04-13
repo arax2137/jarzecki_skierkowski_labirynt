@@ -6,7 +6,12 @@
 #define MAX_LINE_LENGTH 1024
 
 
-struct size {
-	int x;
-	int y;
+struct maze {
+	int size_x;
+	int size_y;
+	int start_x;
+	int start_y;
+	int end_x;
+	int end_y;
+	
 };
