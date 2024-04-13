@@ -1,33 +1,43 @@
 #include "fhandling.h"
 
-struct size mazeSize(FILE *in){
+struct maze mazeData(FILE *in){
 
 
-	struct size s;
-
-
-	s.y = 0;
-	s.x = 0;
+	struct maze s;
 
 	int c;
-	int w = 0;
+	int x = 0, y = 0;
 	while ((c = fgetc(in)) != EOF) {
 
-		if (c == '\n') {
-			w = 1;
-			s.y++;
+		if (c == 'P'){
+			s.start_x = x;
+			s.start_y = y;
 		}
-		if (w == 0)
-			s.x++;
+		if (c == 'K'){
+			s.end_x = x;
+			s.end_y = y;
+		}
+
+		if (c == '\n') {
+			s.size_x = x;
+			x = 0;
+			y++;
+		}
+		else
+			x++;
+		
 	}
+	
+	s.size_y = y;
+
 
 	return s;
 
 }
 
 
-int replaceChr(FILE* in, int y, int x, char a, struct size s) {
-	int pos = y * (s.x + 2) + x;
+int replaceChr(FILE* in, int y, int x, char a, struct maze s) {
+	int pos = y * (s.size_x + 2) + x;
 	int l = fseek(in, (long)pos, SEEK_SET);
 	
 
@@ -38,8 +48,8 @@ int replaceChr(FILE* in, int y, int x, char a, struct size s) {
 }
 
 
-char getChr(FILE* in, int y, int x, struct size s){
-	int pos = y * (s.x + 2) + x;
+char getChr(FILE* in, int y, int x, struct maze s){
+	int pos = y * (s.size_x + 2) + x;
 	int l = fseek(in, (long)pos, SEEK_SET);
 	int c = fgetc(in);
 
@@ -63,10 +73,6 @@ FILE* copy_file(const char* file_name) {
 	while ((c = fgetc(in)) != EOF) {
 		fputc(c, out);
 	}
-
-
-
-
 
 	fclose(in);
 	return out;
