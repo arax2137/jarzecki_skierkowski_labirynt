@@ -20,3 +20,8 @@ char getChr(FILE* in, int y, int x, struct size s);
 Resetuje wskaznik do pozycji poczatkowej pliku 
 */
 void resetPointer(FILE* f);
+
+/*
+Funkcja zajmujaca się kopiowaniem pliku macierzystego do pliku, który będzie zawierał rozwiązanie
+*/
+FILE* copy_file(const char* file_name);
