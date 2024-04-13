@@ -15,3 +15,13 @@ struct maze {
 	int end_y;
 	
 };
+
+struct movement {
+	char dir;
+	int x;
+	int y;
+	int xn;
+	int yn; // x/y next
+	int xp;
+	int yp; // x/y previous
+};
