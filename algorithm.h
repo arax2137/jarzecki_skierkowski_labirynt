@@ -1,5 +1,5 @@
 #include "macro.h"
-
+#include "fhandling.h"
 
 
 /*
@@ -16,6 +16,10 @@ oblicza nastepny i poprzedni punkt ruchu
 struct movement points(struct movement mov);
 
 
-void alg(FILE* in, struct maze maz)
+/*
+
+*/
+void alg(FILE* in, struct maze maz);
+
 
 

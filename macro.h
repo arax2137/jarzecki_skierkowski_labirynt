@@ -17,9 +17,9 @@ struct maze {
 };
 
 struct movement {
-	char dir;
+	char dir; // movement direction
 	int x;
-	int y;
+	int y;  // x/y current
 	int xn;
 	int yn; // x/y next
 	int xp;
