@@ -50,3 +50,24 @@ char getChr(FILE* in, int y, int x, struct size s){
 void resetPointer(FILE* f) {
 	fseek(f, 0, SEEK_SET);
 }
+
+FILE* copy_file(const char* file_name) {
+
+
+	FILE* in;
+	FILE* out;
+	in = fopen(file_name, "r");
+	out = fopen("rozwiazanie.txt", "w+");
+
+	int c;
+	while ((c = fgetc(in)) != EOF) {
+		fputc(c, out);
+	}
+
+
+
+
+
+	fclose(in);
+	return out;
+}
