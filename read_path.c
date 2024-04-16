@@ -25,6 +25,7 @@ void read_path(FILE* in,struct maze m)
 	FILE* out;
 	out = fopen("kroki.txt", "w");
 	char kierunek = baseDirection(m);
+	char kierunek_nastepny;
 
 	int x = m.start_x;
 	int y = m.start_y;
@@ -39,17 +40,16 @@ void read_path(FILE* in,struct maze m)
 			while (getChr(in, y, x, m) != 'X' && getChr(in, y, x, m) != '2' && getChr(in, y, x, m) != 'K') {
 				replaceChr(in, y, x, '.', m);
 				count_steps++;
-				frpintf
 				if (direction(in, x, y, m) != 'r' && direction(in, x, y, m) != 'c')
 					break;
-				if (getChr(in, y, x + 1, m) != 'X' && getChr(in, y, x + 1, m) != '2')
+				else if (getChr(in, y, x + 1, m) != 'X' && getChr(in, y, x + 1, m) != '2')
 					x++;
 				else
 					break;
 			}
-			kierunek = direction(in, x, y, m);
+			kierunek_nastepny = direction(in, x, y, m);
 			fprintf(out, "FORWARD %i\n", count_steps - 1);
-			switch (kierunek) {
+			switch (kierunek_nastepny) {
 			case 'u':
 				fprintf(out, "TURN LEFT\n");
 				break;
@@ -57,6 +57,7 @@ void read_path(FILE* in,struct maze m)
 				fprintf(out, "TURN RIGHT\n");
 				break;
 			}
+			kierunek = direction(in, x, y, m);
 			break;
 		case 'l':
 			count_steps = 0;
@@ -65,14 +66,14 @@ void read_path(FILE* in,struct maze m)
 				count_steps++;
 				if (direction(in, x, y, m) != 'l' && direction(in, x, y, m) != 'c')
 					break;
-				if (getChr(in, y, x -1, m) != 'X' && getChr(in, y, x - 1, m) != '2')
+				else if (getChr(in, y, x -1, m) != 'X' && getChr(in, y, x - 1, m) != '2')
 					x--;
 				else
 					break;
 			}
-			kierunek = direction(in, x, y, m);
+			kierunek_nastepny = direction(in, x, y, m);
 			fprintf(out, "FORWARD %i\n", count_steps - 1);
-			switch (kierunek) {
+			switch (kierunek_nastepny) {
 			case 'u':
 				fprintf(out, "TURN RIGHT\n");
 				break;
@@ -80,6 +81,7 @@ void read_path(FILE* in,struct maze m)
 				fprintf(out, "TURN LEFT\n");
 				break;
 			}
+			kierunek = direction(in, x, y, m);
 			break;
 		case 'u':
 			count_steps = 0;
@@ -88,14 +90,14 @@ void read_path(FILE* in,struct maze m)
 				count_steps++;
 				if (direction(in, x, y, m) != 'u' && direction(in, x, y, m) != 'c')
 					break;
-				if (getChr(in, y - 1, x, m) != 'X' && getChr(in, y - 1, x, m) != '2')
+				else if (getChr(in, y - 1, x, m) != 'X' && getChr(in, y - 1, x, m) != '2')
 					y--;
 				else
 					break;
 			}
-			kierunek = direction(in, x, y, m);
+			kierunek_nastepny = direction(in, x, y, m);
 			fprintf(out, "FORWARD %i\n", count_steps - 1);
-			switch (kierunek) {
+			switch (kierunek_nastepny) {
 			case 'l':
 				fprintf(out, "TURN RIGHT\n");
 				break;
@@ -103,6 +105,7 @@ void read_path(FILE* in,struct maze m)
 				fprintf(out, "TURN LEFT\n");
 				break;
 			}
+			kierunek = direction(in, x, y, m);
 			break;
 		case 'd':
 			count_steps = 0;
@@ -111,14 +114,14 @@ void read_path(FILE* in,struct maze m)
 				count_steps++;
 			if (direction(in, x, y, m) != 'd' && direction(in, x, y, m) != 'c')
 					break;
-				if (getChr(in, y+1, x, m) != 'X' && getChr(in, y+1, x , m) != '2')
-					y++;
-				else
-					break;
+			else if (getChr(in, y+1, x, m) != 'X' && getChr(in, y+1, x , m) != '2')
+				y++;
+			else
+				break;
 			}
-			kierunek = direction(in, x, y, m);	
+			kierunek_nastepny = direction(in, x, y, m);
 			fprintf(out, "FORWARD %i\n", count_steps - 1);
-			switch (kierunek) {
+			switch (kierunek_nastepny) {
 			case 'l':
 				fprintf(out, "TURN LEFT\n");
 				break;
@@ -126,9 +129,10 @@ void read_path(FILE* in,struct maze m)
 				fprintf(out, "TURN RIGHT\n");
 				break;
 			}
+			kierunek = direction(in, x, y, m);
 			break;
 		}
 	} 
 	fprintf(out, "STOP");
-	close(out);
 }
+
