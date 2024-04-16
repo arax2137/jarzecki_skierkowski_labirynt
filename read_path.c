@@ -132,6 +132,8 @@ void read_path(FILE* in,struct maze m)
 			kierunek = direction(in, x, y, m);
 			break;
 		}
+		if (getChr(in, y, x, m) == 'K')
+			break;
 	} 
 	fprintf(out, "STOP");
 }
