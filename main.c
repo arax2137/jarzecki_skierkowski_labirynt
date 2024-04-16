@@ -16,8 +16,10 @@ int main(){
 	printf("x - %d, y - %d\nstart - %d/%d\nkoniec - %d/%d\n", s.size_x, s.size_y, s.start_x, s.start_y, s.end_x, s.end_y);
 
 
-	alg(f, s);
-
+	resetPointer(f);
+	struct maze m = mazeData(f);
+	read_path(f, m);
+	
 	
 	//replaceChr(f, 39, 40, 'V', s);
 	//printf("%c", getChr(f, 39, 40, s));
