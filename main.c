@@ -12,7 +12,7 @@ int main(){
 	
 	int binary = 1; //0 zwykly, 1 binarny
 
-	char* name = "maze.txt";
+	char* name = "mazeb.txt";
 	char* bname = "maze.bin";
 
 
@@ -22,6 +22,7 @@ int main(){
 		struct maze s = mazeData(f);
 		alg(f, s);
 		read_path(f, s);
+		fclose(f);
 	}
 	
 	else if (binary == 1) {
@@ -30,6 +31,9 @@ int main(){
 		resetPointer(f);
 		struct maze s = mazeData(f);
 		alg(f, s);
-		read_path(f, s);
+		int steps = read_path(f, s);
+		char dir = baseDirection(s);
+		encode(bname, dir, steps);
+		fclose(f);
 	}
 }

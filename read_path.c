@@ -19,7 +19,7 @@ int last_step(FILE* in, int x, int y, struct maze m) {
 		return 0;
 }
 
-void read_path(FILE* in,struct maze m)
+int read_path(FILE* in,struct maze m)
 {
 	int i = 0;
 
@@ -32,6 +32,8 @@ void read_path(FILE* in,struct maze m)
 	int y = m.start_y;
 	fprintf(out, "START\n");
 	int count_steps = 0;
+
+	int steps = 0;
 	
 	while (!last_step(in,x,y,m))
 	{
@@ -134,11 +136,13 @@ void read_path(FILE* in,struct maze m)
 			break;
 		}
 		//printf("%d %d\n", x,y);
+		steps++;
 
 		if (getChr(in, y, x, m) == 'K')
 			break;
 	} 
 	fprintf(out, "STOP");
 	fclose(out);
+	return steps;
 }
 

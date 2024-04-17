@@ -357,6 +357,8 @@ void alg(FILE *in, struct maze maz) {
 
 
 	}
+	
+
 
 
 }
