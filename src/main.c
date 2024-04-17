@@ -39,14 +39,14 @@ int main(int argc, char *argv[]){
 	}
 	
 	else if (type == 1) {
-		decode(bname);
+		decode(name);
 		FILE* f = copy_file("decoded.txt");
 		resetPointer(f);
 		struct maze s = mazeData(f);
 		alg(f, s);
 		int steps = read_path(f, s);
 		char dir = baseDirection(s);
-		encode(bname, dir, steps);
+		encode(name, dir, steps);
 		fclose(f);
 	}
 	
