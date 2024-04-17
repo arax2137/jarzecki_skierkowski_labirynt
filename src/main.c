@@ -3,7 +3,7 @@
 #include "algorithm.h"
 #include "binary.h"
 #include "read_path.h"
-
+#include<unistd.h>
 
 int main(int argc, char *argv[]){
 

@@ -3,7 +3,6 @@
 #include<stdlib.h>
 #pragma once
 #include <string.h>
-#include<unistd.h>
 #define MAX_LINE_LENGTH 1024
 
 #define SWAP_2(x) ( (((x) & 0xff) << 8) | ((unsigned short)(x) >> 8) )
