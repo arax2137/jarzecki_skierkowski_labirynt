@@ -7,7 +7,7 @@
 
 
 int main(){
-	
+
 	
 	int binary = 1; //0 zwykly, 1 binarny
 
