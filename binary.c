@@ -91,3 +91,88 @@ void decode(char* name) {
 	fclose(out);
 	fclose(in);
 }
+
+void encode(char* name, char dir, int steps) {
+
+	FILE* f = fopen(name, "a+b");
+
+	FILE* in = fopen("kroki.txt", "r");
+
+	fseek(f, 0, SEEK_END);
+
+	fwrite(&steps, 16, 1, f);
+
+
+	char d;
+
+	switch (dir) {
+	case 'r':
+		d = 'E';
+		break;
+	case 'l':
+		d = 'W';
+		break;
+	case 'u':
+		d = 'N';
+		break;
+	case 'd':
+		d = 'S';
+		break;
+	}
+
+	int count;
+	char tdir[10] = "";
+	char buff[10] = "";
+
+	fscanf(in, "%s", buff);
+
+	for (int i = 0; i < steps; i++) {
+		fscanf(in, "%s %d", buff, &count);
+		fscanf(in, "%s %s", buff, &tdir);
+
+		switch (tdir[0]) {
+		case 'R':
+			switch (d) {
+			case 'E':
+				d = 'S';
+				break;
+			case 'W':
+				d = 'N';
+				break;
+			case 'N':
+				d = 'E';
+				break;
+			case 'S':
+				d = 'W';
+				break;
+			}
+			break;
+		case 'L':
+			switch (d) {
+			case 'E':
+				d = 'N';
+				break;
+			case 'W':
+				d = 'S';
+				break;
+			case 'N':
+				d = 'W';
+				break;
+			case 'S':
+				d = 'E';
+				break;
+			}
+			break;
+		}
+
+		count--;
+
+		fwrite(&d, 1, 1, f);
+		fwrite(&count, 1, 1, f);
+
+	}
+	
+
+	fclose(f);
+	fclose(in);
+}
