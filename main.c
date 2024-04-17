@@ -2,6 +2,7 @@
 #include "fhandling.h"
 #include "algorithm.h"
 #include "binary.h"
+#include "read_path.h"
 
 
 
@@ -20,6 +21,7 @@ int main(){
 		resetPointer(f);
 		struct maze s = mazeData(f);
 		alg(f, s);
+		read_path(f, s);
 	}
 	
 	else if (binary == 1) {
@@ -28,5 +30,6 @@ int main(){
 		resetPointer(f);
 		struct maze s = mazeData(f);
 		alg(f, s);
+		read_path(f, s);
 	}
 }
