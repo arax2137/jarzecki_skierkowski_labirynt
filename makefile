@@ -1,21 +1,16 @@
 CC = gcc
+CFLAGS = -Wall
 
-CFLAGS = -Wall -Wextra -std=c99
-
-SRCS = src/main.c src/fhandling.c src/read_path.c src/binary.c
-HEADERS =src/fhandling.h src/read_path.h src/macro.h src/binary.h
-
+SRCS = main.c algorithm.c fhandling.c read_path.c
 OBJS = $(SRCS:.c=.o)
 
-EXEC = program
+all: app
 
-all: $(EXEC)
+app: $(OBJS)
+    @$(CC) $(CFLAGS) $^ -o $@
 
-$(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-%.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c -o $@ $<
+%.o: %.c %.h
+    @$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(EXEC) $(OBJS)
+    @rm -f app $(OBJS)
