@@ -21,6 +21,7 @@ int last_step(FILE* in, int x, int y, struct maze m) {
 
 void read_path(FILE* in,struct maze m)
 {
+	int i = 0;
 
 	FILE* out;
 	out = fopen("kroki.txt", "w");
@@ -132,6 +133,8 @@ void read_path(FILE* in,struct maze m)
 			kierunek = direction(in, x, y, m);
 			break;
 		}
+		printf("%d %d\n", x,y);
+=======
 		if (getChr(in, y, x, m) == 'K')
 			break;
 	} 
