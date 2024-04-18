@@ -39,6 +39,11 @@ int main(int argc, char *argv[]){
 	
 	if (type == 0) {
 		FILE* f = copy_file(name);
+		if(f == NULL){
+			printf("[!] Plik nie istnieje");
+			return 1;
+		}
+			
 		resetPointer(f);
 		struct maze s = mazeData(f);
 		alg(f, s);
@@ -47,7 +52,12 @@ int main(int argc, char *argv[]){
 	}
 	
 	else if (type == 1) {
-		decode(name);
+		int t = decode(name);
+		if(t == 1){
+			printf("[!] Plik nie istnieje");
+			return 1;
+		}
+		
 		FILE* f = copy_file("decoded.txt");
 		resetPointer(f);
 		struct maze s = mazeData(f);

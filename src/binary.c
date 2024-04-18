@@ -1,8 +1,13 @@
 #include "binary.h"
 
-void decode(char* name) {
+int decode(char* name) {
 
 	FILE* in = fopen(name, "rb");
+	
+	if(in == NULL){
+		return 1;
+	}
+	
 	FILE* out = fopen("decoded.txt", "w+");
 
 	int fileid = 0, escape = 0, columns = 0, lines = 0, entry_x = 0, entry_y = 0, exit_x = 0, exit_y = 0, counter = 0, solution_offset = 0, separator = 0, wall = 0, path = 0;
@@ -90,6 +95,7 @@ void decode(char* name) {
 
 	fclose(out);
 	fclose(in);
+	return 0;
 }
 
 void encode(char* name, char dir, int steps) {
