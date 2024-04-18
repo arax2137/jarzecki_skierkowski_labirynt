@@ -37,7 +37,7 @@ struct maze mazeData(FILE *in){
 
 
 int replaceChr(FILE* in, int y, int x, char a, struct maze s) {
-	int pos = y * (s.size_x + 2) + x;
+	int pos = y * (s.size_x + 1) + x;
 	int l = fseek(in, (long)pos, SEEK_SET);
 	
 
@@ -49,7 +49,7 @@ int replaceChr(FILE* in, int y, int x, char a, struct maze s) {
 
 
 char getChr(FILE* in, int y, int x, struct maze s){
-	int pos = y * (s.size_x + 2) + x;
+	int pos = y * (s.size_x + 1) + x;
 	int l = fseek(in, (long)pos, SEEK_SET);
 	int c = fgetc(in);
 
@@ -67,6 +67,9 @@ FILE* copy_file(const char* file_name) {
 	FILE* in;
 	FILE* out;
 	in = fopen(file_name, "r");
+	
+	if(in == NULL)
+		return NULL;
 	out = fopen("rozwiazanie.txt", "w+");
 
 	int c;
