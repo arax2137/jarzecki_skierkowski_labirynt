@@ -28,7 +28,15 @@ int main(int argc, char *argv[]){
 			type = 0;
 		}
 	}
-
+	
+	/*
+	FILE *f = copy_file(name);
+	resetPointer(f);
+	struct maze s = mazeData(f);
+	printf("%c", getChr(f, 1,0,s));
+	printf("\n%d %d %d %d %d %d", s.size_x, s.size_y, s.start_x, s.start_y, s.end_x, s.end_y);*/
+	
+	
 	if (type == 0) {
 		FILE* f = copy_file(name);
 		resetPointer(f);
@@ -49,5 +57,6 @@ int main(int argc, char *argv[]){
 		encode(name, dir, steps);
 		fclose(f);
 	}
+	
 	
 }

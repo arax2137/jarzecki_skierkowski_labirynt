@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -Wall -Wextra -std=c99
+CFLAGS = -Wall -Wextra 
 
 SRCS = src/main.c src/fhandling.c src/read_path.c src/binary.c src/algorithm.c
 HEADERS =src/fhandling.h src/read_path.h src/macro.h src/binary.h src/algorithm.h

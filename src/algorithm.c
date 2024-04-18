@@ -97,7 +97,7 @@ char chooseExit(FILE* in, struct maze maz, struct movement mov) {
 
 	int rule = 1;
 	char d = 'a';
-
+	int i;
 	switch (mov.dir) {
 	case 'l':
 		d = 'r';
@@ -131,8 +131,8 @@ char chooseExit(FILE* in, struct maze maz, struct movement mov) {
 
 
 		//opcja 3
-
-		for (int i = 0; i < 2; i++) {
+		
+		for (i = 0; i < 2; i++) {
 
 			if (getChr(in, mov.y - 1, mov.x, maz) != 'X')
 				if (getChr(in, mov.y - 1, mov.x, maz) - '0' == i || getChr(in, mov.y - 1, mov.x, maz) == ' ')
@@ -183,7 +183,7 @@ char chooseExit(FILE* in, struct maze maz, struct movement mov) {
 
 		//opcja 3
 
-		for (int i = 0; i < 2; i++) {
+		for (i = 0; i < 2; i++) {
 
 			if (getChr(in, mov.y - 1, mov.x, maz) != 'X')
 				if (getChr(in, mov.y - 1, mov.x, maz) - '0' == i || getChr(in, mov.y - 1, mov.x, maz) == ' ')
@@ -233,7 +233,7 @@ char chooseExit(FILE* in, struct maze maz, struct movement mov) {
 
 		//opcja 3
 
-		for (int i = 0; i < 2; i++) {
+		for (i = 0; i < 2; i++) {
 
 			if (getChr(in, mov.y - 1, mov.x, maz) != 'X')
 				if (getChr(in, mov.y - 1, mov.x, maz) - '0' == i || getChr(in, mov.y - 1, mov.x, maz) == ' ')
@@ -283,7 +283,7 @@ char chooseExit(FILE* in, struct maze maz, struct movement mov) {
 
 		//opcja 3
 
-		for (int i = 0; i < 2; i++) {
+		for (i = 0; i < 2; i++) {
 
 			if (getChr(in, mov.y, mov.x + 1, maz) != 'X')
 				if (getChr(in, mov.y, mov.x + 1, maz) - '0' == i || getChr(in, mov.y, mov.x + 1, maz) == ' ')
