@@ -1,0 +1,151 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+\title{JiMP 2 sprawozdanie z projektu w C}
+\author{Paweł Skierkowski, Łukasz Jarzęcki}
+\date{April 2024}
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Wstęp}
+Celem projektu było stworzenie programu, który umożliwia znaleźć wyjścia z labiryntu wczytanego przez użytkownika. Labirynt wprowadzany jest z pliku tekstowego lub binarnego.
+\subsection{Problem zadania}
+\par Głównym problemem jest implementacja algorytmu, który umożliwi znalezienie ścieżki, która przemieszczając się po labiryncie znajduje drogę między punktem P (początkiem) a K (końcem). Plik tekstowy składa się ze znaków ”X” oznaczających ścianę oraz ” ” oznaczających przejście, jak i opisanych wcześniej ‘P’ i ‘K’. Natomiast plik binarny składa się z poleceń opisujących budowę labiryntu. 
+\par Wymaganiem, które stworzyło dodatkową trudność dla projektu było wymagane ograniczenie zużycia przez program pamięci, ustalonym na 512kB w trakcie czasu działania. Wyzwanie to wymaga głębokiego zrozumienia zarówno algorytmów, jak i niskopoziomowych aspektów zarządzania zasobami w programowaniu. Wynikiem działania programu, ma być lista kroków potrzebnych do przejścia przez labirynt w formacie :
+\par START
+\par FORWARD 8
+\par TURN LEFT
+\par STOP
+\subsection{Sposób rozwiązania}
+Do rozwiązania problemu zastosowaliśmy algorytm Trémaux. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{1.png}
+    \caption{Algorytm Trémaux}
+\end{figure}
+Algorytm ten działa, poprzez stosowanie się do poniższych zasad:
+\begin{itemize}
+
+    \item 	Gdy znajdujesz się na początku ścieżki, nie ważne czy jest to wejście na skrzyżowanie, czy też zejście z niego zostaw znacznik.(patrz rys. 1.)
+    \item 	Jeżeli ścieżka jest oznaczona 2 razy, to droga ta zostaje odcięta (na rysunku oznaczenie pojedyncze to ‘.’, a podwójne to ‘X’).
+    \item 	Kiedy jesteś na skrzyżowaniu wybierz jedno z dostępnych wyjść. 
+    \begin{itemize}
+        \item Jeżeli ze skrzyżowania wychodzi ścieżka jeszcze nie oznaczona wybierz tą ścieżkę (niema znaczenia którą) 
+        \item 	Jeżeli przejście, których przyszedłeś nie jest oznaczone 2 razy to wróć tą samą drogą (pomaga to z wykrywaniem ślepych zaułków i pętli) 
+        \item	Wybierz drogę z najmniejszym możliwym oznaczeniem
+        \end{itemize}
+\end{itemize}
+\par Po zakończeniu oznaczania ścieżek i znalezieniu wyjścia, należy połączyć wszystkie przejścia oznaczone raz. Prowadzi to do znalezienia właściwej drogi.
+\par W naszym rozwiązaniu przyjęliśmy strategię oznaczania ścieżek, która zakłada że pojedyncze oznaczenie to ‘1’, natomiast podwójne to ‘2’. Przykład rozwiązania prostego labiryntu poniżej.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.2\linewidth]{2.png}
+    \caption{Oznaczenie ścieżki}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\par Jest to pierwszy krok do rozwiązania, następnym krokiem jest połączenie jedynek, oraz wypisanie instrukcji.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.2\linewidth]{3.png}
+    \caption{Połączenie punktów}
+    \label{fig:enter-label}
+\end{figure}
+\par Poprawna ścieżka jest w tym momencie oznaczona kropkami. Lista kroków wypisana do pliku kroki.txt:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\linewidth]{obraz_2024-04-17_190401195.png}
+    \caption{Lista kroków}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+\section{Implementacja}
+\subsection{Modularność}
+\par Kluczowym aspektem realizacji projektu jest rozdzielenie go na moduły, co umożliwiło efektywną pracę i ułatwiła zarządzanie kodem. Dokonaliśmy podziału na następujące moduły:
+\begin{itemize}
+    \item \textbf{	Algorytm} (algorithm.c, algorithm.h): w module tym zaimplementowany jest algorytm , który odpowiada za główne działanie programu. Poza zaznaczaniem drogi do wyjścia zawiera funkcje wykorzystywane w innych modułach np. podstawowy kierunek przemieszczania się, zatrzymanie działania programu.
+    \item \textbf{Odczytywanie ścieżki} (read\textunderscore{}path.c, read\textunderscore{}path.h): moduł ten odpowiada za odnalezienie oznaczonej przez główny algorytm ścieżki, oraz wypisanie kroków potrzebnych do przejścia.
+    \item \textbf{Operacje na plikach }(fhandling.c, fhandling.h): w tym module odbywa się wczytywanie pliku, kopiowanie pliku rozwiązania, ustalanie pozycji, zresetowanie obecnej pozycji w pliku, znalezienie koordynatów wejścia i wyjścia z labiryntu. Stworzone są w niej również funkcje ‘replaceChr’ czyli zamiana znaku w pliku znajdującego się na ustalonej pozycji, na znak podany w wywołaniu funkcji, oraz ‘getChr’ która zwraca znak z pliku na żądanej pozycji.
+    \item \textbf{MAIN }(main.c, macro.h): main.c jest swego rodzaju spięciem wszystkich funkcjonalności programu w jedno, natomiast macro.h odpowiada za dodanie bibliotek oraz powołanie struktur zawierających dane o labiryncie oraz kierunkach ruchu.
+    \item \textbf{Plik binarny}(binary.c, binary.h): ten moduł programu odpowiada za roszyfrowywanie pliku binarnego, a następnie kodowanie rozwiązania w postaci komend, jakie znajdujemy w pliku binarnym. 
+\end{itemize}
+\newpage
+\subsection{Działanie programu}
+\par Program rozpoczyna swoje działanie, od stworzenia kopi pliku (copy\textunderscore{}file) z labiryntem, na którym później sam będzie pracował. Dzięki temu plik bazowy z labiryntem nie zostaje zniszczony i może być wykorzystywany wiele razy, bez konieczności generowania nowego labiryntu. Kolejnym etapem jest określenie punktów bazowych labiryntu i zapisanie ich do struktury, a następnie wypisanie ich na ekran konsoli w celu podania podstawowych informacji o labiryncie.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{5.png}
+    \caption{Podstawowe informacje}
+    \label{fig:enter-label}
+\end{figure}
+\par Następnie wywoływana jest funkcja ‘alg’ znajdująca się w module algorith.c, która za pomocą pętli while przemieszcza się po pliku, sprawdzając czy nie jest to koniec oraz oznacza przejścia z wykorzystaniem wcześniej opisanych funkcji wyszukiwania oraz zamieniania znaków.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{6.png}
+    \caption{Wywołanie algorytmu}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{7.png}
+\end{figure}
+\newpage
+\par Funkcja po oznaczeniu ścieżki zostaje przekazana do modułu read\textunderscore{}path.c, w którym wykonywana jest funkcja read\textunderscore{}path(). 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{9.png}
+    \caption{Wywołanie odczytywania ścieżki}
+    \label{fig:enter-label}
+\end{figure}
+\par Zostaje tutaj zastosowane wyszukiwanie kolejnych jedynek w zależności od odpowiedniego kierunku.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{8.png}
+    \caption{Pętla przechodząca po pliku i odczytująca ścieżkę}
+    \label{fig:enter-label}
+\end{figure}
+\par W tej funkcji odbywa się równolegle wypisywanie kolejnych kroków, które są ostatecznym wynikiem działania programu. Wszystkie wypisane funkcje bazują na tych, znajdujących się w module fhandling.c.
+
+\subsection{Funkcjonalność}
+\par \begin{itemize}
+    \item Efektywne znajdowanie ścieżki: Użycie algorytmu Trémaux aby znaleźć drogę przez labirynt. 
+    \item Dynamiczne wczytywanie labiryntów: Możliwość wczytania dowolnego labiryntu z pliku, z automatycznym rozpoznaniem rozmiaru oraz lokalizacji startu i końca. 
+    \item Eksport wyników: Możliwość zapisania wykonanych kroków do pliku (kroki.txt), co ułatwia analizę i prezentację rozwiązania.
+\end{itemize}
+\newpage
+\subsection{Uruchamianie programu}
+\par Uruchamianie programu rozpoczynamy od dostarczenia pliku z labiryntem do katalogu, w którym znajduje się plik wykonywalny. Następnie, aby uruchomić program z zadanym plikiem należy:
+\begin{enumerate}
+    \item Otwórz terminal w systemie Linux.
+    \item Przejdź do katalogu zwierającego pliki z rozwiązaniem.
+    \item Skompiluj program używając polecenia 'make'
+    \item Wywołaj program stosując komendę ./program -n nazwa.pliku -t typ.pliku (parametru mogą być podane w dowolnej kolejności, ponieważ zastosowaliśmy funckję getopt) dozwolonymi parametrami są pliki rozszerzeniach .bin oraz .txt wpisane po '-n' oraz rozszerzenia tych plików w formacie 'bin' lub 'txt' podane po '-t'. Jeżeli nie podamy rozszerzenia (np -t txt) program założy, że podaliśmy plik o rozszerzeniu .txt.
+
+\end{enumerate}
+\section{Testy}
+\par Testując oprogramowanie badaliśmy zarówno czas wykonania, jak i zużycie pamięci dla labiryntów o różnej złożoność. Różniły się one typem pliku (tekstowy lub binarny) oraz wielkością (od 100x100 do 1024x1024). Do testów urzywaliśmy komend 'memusage' i 'time'.
+\subsection{Labirynt 100x100}
+\par Czas wykonania: 0.026s
+\par Zużycie pamięci: 9,156B
+\subsection{Labirynt 1024x1024}
+\par Czas wykonania: 3.14s
+\par Zużycie pamięci: 9,156B
+\subsection{Labirynt binarny (duży labirynt binarny z ISOD)}
+\par Czas wykonania: 0.34s
+\par Zużycie pamięci: 13,724B
+\section{Wnioski}
+\par Realizacja tego projektu umożliwiła nam poszerzenie naszej znajomości środowiska C oraz nasze umiejętności współpracowania nad wspólnym projektem. Największym problemem, z którym musieliśmy się zmierzyć było oczywiście ograniczenie zużycia pamięci. Okazało się, że najważniejszym elementem było dobranie odpowiedniego sposobu , czy algorytmu. 
+\par Wybraliśmy algorytm Trémaux ponieważ wydawał się on nam nietypowy oraz ciekawy. Praca nad rozwiązaniem była interesująca również z powodu graficznej elegancji, jaką prowadzi za sobą ten algorytm. 
+\par Wspólnie pracę rozpoczęliśmy na systemie Windows, a następnie przenieśliśmy ją na system Linux poznaliśmy dzięki temu różnice systemowe, które jeszcze bardziej pogłębiły naszą wiedzę.
+\par Podczas pracy nauczyliśmy się efektywnej współpracy i komunikacji. Projekt ukazał nam realia złożoności i konsekwencji naszych wyborów. Musieliśmy odpowiednio wykorzystać język C aby stworzyć swój mały ‘system’ funkcji globalnych , który pomógł nam rozwiązać program w lepszy sposób.
+
+
+
+\end{document}

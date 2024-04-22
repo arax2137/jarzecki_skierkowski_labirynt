@@ -67,6 +67,9 @@ FILE* copy_file(const char* file_name) {
 	FILE* in;
 	FILE* out;
 	in = fopen(file_name, "r");
+	
+	if(in == NULL)
+		return NULL;
 	out = fopen("rozwiazanie.txt", "w+");
 
 	int c;
