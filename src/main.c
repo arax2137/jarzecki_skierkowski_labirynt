@@ -12,7 +12,7 @@ int main(int argc, char *argv[]){
 	int opt;
 	
 	int type = 0; // 0 - txt, 1 - bin
-	char *name = malloc(20);
+	char *name = malloc(50);
 	
 	while((opt = getopt(argc, argv, "n:t:")) != -1){
 	
