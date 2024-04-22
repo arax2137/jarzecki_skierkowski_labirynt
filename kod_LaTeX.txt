@@ -126,7 +126,7 @@ Algorytm ten działa, poprzez stosowanie się do poniższych zasad:
     \item Otwórz terminal w systemie Linux.
     \item Przejdź do katalogu zwierającego pliki z rozwiązaniem.
     \item Skompiluj program używając polecenia 'make'
-    \item Wywołaj program stosując komendę ./program -n nazwa.pliku -t typ.pliku (parametru mogą być podane w dowolnej kolejności, ponieważ zastosowaliśmy funckję getopt) dozwolonymi parametrami są pliki rozszerzeniach .bin oraz .txt wpisane po '-n' oraz rozszerzenia tych plików w formacie 'bin' lub 'txt' podane po '-t'. Jeżeli nie podamy rozszerzenia (np -t txt) program założy, że podaliśmy plik o rozszerzeniu .txt.
+    \item Wywołaj program stosując komendę ./program -n nazwa.pliku -t typ.pliku (parametru mogą być podane w dowolnej kolejności, ponieważ zastosowaliśmy funckję getopt) dozwolonymi parametrami są pliki rozszerzeniach .bin oraz .txt wpisane po '-n' oraz rozszerzenia tych plików w formacie 'bin' lub 'txt' podane po '-t'. Jeżeli nie podamy rozszerzenia (np -t txt) program założy, że podaliśmy plik o rozszerzeniu .txt, maksymalna długość nazwy pliku to 50 znaków..
 
 \end{enumerate}
 \section{Testy}
