@@ -19,8 +19,23 @@ int passageType(FILE *in, struct maze m, struct movement mov) {
 				return 1;
 		}
 	}
-	else
-		return 1;
+	else {
+		int licznik = 0;
+		if (getChr(in, mov.y+1, mov.x, m) == 'X')
+			licznik++;
+		if (getChr(in, mov.y - 1, mov.x, m) == 'X')
+			licznik++;
+		if (getChr(in, mov.y, mov.x+1, m) == 'X')
+			licznik++;
+		if (getChr(in, mov.y, mov.x-1, m) == 'X')
+			licznik++;
+
+		if (licznik == 3)
+			return 2;
+		else
+			return 1;
+	}
+		
 }
 
 struct movement points(struct movement mov) {
@@ -314,8 +329,8 @@ void alg(FILE *in, struct maze maz) {
 	int tsj = 0; // time since juncture
 
 	while (!isFinished(in, maz, mov)) {
-
-		//Sleep(2000);
+		//printf("Pos: %d/%d, tsj: %d, dir: %c\n", mov.x, mov.y, tsj, mov.dir);
+		
 
 		// jest prosta droga
 		if (!passageType(in, maz, mov)) {
@@ -325,9 +340,12 @@ void alg(FILE *in, struct maze maz) {
 			mov = points(mov);
 
 			tsj++;
+
+			//printf(" prosta\n");
+			//getc(stdin);
 		}
 		//jest jakas zmiana
-		else {
+		else if(passageType(in, maz, mov) == 1){
 
 			if (tsj >= 2) {
 				//zaznaczanie wejscia przez ktore weszlismy na skrzyzowanie jezeli nie ma skrzyzowania po skrzyzowaniu
@@ -351,9 +369,33 @@ void alg(FILE *in, struct maze maz) {
 				replaceChr(in, mov.y, mov.x, '2', maz);
 
 			tsj = 0;
+
+			//printf(" zmiana\n");
+			//getc(stdin);
 		}
-		//printf("Pos: %d/%d, tsj: %d, dir: %c\n", mov.x, mov.y, tsj, mov.dir);
-		//getc(stdin);
+		else if (passageType(in, maz, mov) == 2) {
+			if (tsj >= 2) {
+				//zaznaczanie wejscia przez ktore weszlismy na skrzyzowanie jezeli nie ma skrzyzowania po skrzyzowaniu
+				if (getChr(in, mov.yp, mov.xp, maz) == ' ')
+					replaceChr(in, mov.yp, mov.xp, '1', maz);
+				else if (getChr(in, mov.yp, mov.xp, maz) == '1')
+					replaceChr(in, mov.yp, mov.xp, '2', maz);
+			}
+
+			mov.dir = chooseExit(in, maz, mov);
+			mov = points(mov);
+
+			mov.x = mov.xn;
+			mov.y = mov.yn;
+			mov = points(mov);
+
+			tsj = 0;
+
+
+			//printf(" zmiana\n");
+			//getc(stdin);
+		}
+		
 
 
 	}
