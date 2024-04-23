@@ -4,7 +4,7 @@
 
 /*
 zwraca "typ pola" na jakim sie znajdujemy
-0 - prosta droga, 1 - skrzyzowanie/zakret
+0 - prosta droga, 1 - skrzyzowanie/zakret, 2 - zaulek jednokratkowy
 */
 int passageType(FILE* in, struct maze m, struct movement mov);
 
