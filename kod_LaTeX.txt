@@ -126,7 +126,7 @@ Algorytm ten działa, poprzez stosowanie się do poniższych zasad:
     \item Otwórz terminal w systemie Linux.
     \item Przejdź do katalogu zwierającego pliki z rozwiązaniem.
     \item Skompiluj program używając polecenia 'make'
-    \item Wywołaj program stosując komendę ./program -n nazwa.pliku -t typ.pliku (parametru mogą być podane w dowolnej kolejności, ponieważ zastosowaliśmy funckję getopt) dozwolonymi parametrami są pliki rozszerzeniach .bin oraz .txt wpisane po '-n' oraz rozszerzenia tych plików w formacie 'bin' lub 'txt' podane po '-t'. Jeżeli nie podamy rozszerzenia (np -t txt) program założy, że podaliśmy plik o rozszerzeniu .txt, maksymalna długość nazwy pliku to 50 znaków..
+    \item Wywołaj program stosując komendę ./program -n nazwa.pliku -t typ.pliku (parametru mogą być podane w dowolnej kolejności, ponieważ zastosowaliśmy funckję getopt) dozwolonymi parametrami są pliki rozszerzeniach .bin oraz .txt wpisane po '-n' oraz rozszerzenia tych plików w formacie 'bin' lub 'txt' podane po '-t'. Jeżeli nie podamy rozszerzenia (np -t txt) program założy, że podaliśmy plik o rozszerzeniu .txt, maksymalna długość nazwy pliku to 50 znaków.
 
 \end{enumerate}
 \section{Testy}
@@ -138,8 +138,17 @@ Algorytm ten działa, poprzez stosowanie się do poniższych zasad:
 \par Czas wykonania: 3.14s
 \par Zużycie pamięci: 9,156B
 \subsection{Labirynt binarny (duży labirynt binarny z ISOD)}
-\par Czas wykonania: 0.34s
-\par Zużycie pamięci: 13,724B
+\par Czas wykonania: 0.4s
+\par Zużycie pamięci: 13,754B
+\subsection{Labirynt maze_turns_1024_1023}
+\par Czas wykonania: 1m 6.29s
+\par Zużycie pamięci:9,186B
+\subsection{Labirynt maze_forks_1023_1023}
+\par Czas wykonania: 54.7s
+\par Zużycie pamięci:9,186B
+\subsection{Labirynt maze_forks_512_511}
+\par Czas wykonania: 13.5s
+\par Zużycie pamięci:9,186B
 \section{Wnioski}
 \par Realizacja tego projektu umożliwiła nam poszerzenie naszej znajomości środowiska C oraz nasze umiejętności współpracowania nad wspólnym projektem. Największym problemem, z którym musieliśmy się zmierzyć było oczywiście ograniczenie zużycia pamięci. Okazało się, że najważniejszym elementem było dobranie odpowiedniego sposobu , czy algorytmu. 
 \par Wybraliśmy algorytm Trémaux ponieważ wydawał się on nam nietypowy oraz ciekawy. Praca nad rozwiązaniem była interesująca również z powodu graficznej elegancji, jaką prowadzi za sobą ten algorytm. 
