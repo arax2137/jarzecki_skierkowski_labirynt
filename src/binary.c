@@ -101,10 +101,18 @@ int decode(char* name) {
 void encode(char* name, char dir, int steps) {
 
 	FILE* f = fopen(name, "a+b");
+	if(f == NULL){
+		printf("[!] Nie udało się otworzyć pliku binarnego do zapisu");
+		return;
+	}
 
 	FILE* in = fopen("kroki.txt", "r");
+	if(in == NULL){
+		printf("[!] Nie udało się otworzyć pliku z krokami do odczytu");
+		return;
+	}
 
-	fseek(f, 0, SEEK_END);
+	//fseek(f, 0, SEEK_END);
 
 	fwrite(&steps, 16, 1, f);
 
@@ -125,6 +133,7 @@ void encode(char* name, char dir, int steps) {
 		d = 'S';
 		break;
 	}
+
 
 	int count;
 	char tdir[10] = "";

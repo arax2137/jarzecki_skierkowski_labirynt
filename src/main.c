@@ -62,8 +62,10 @@ int main(int argc, char *argv[]){
 		resetPointer(f);
 		struct maze s = mazeData(f);
 		alg(f, s);
-		int steps = read_path(f, s);
-		char dir = baseDirection(s);
+		int steps;
+		steps = read_path(f, s);
+		char dir;
+		dir = baseDirection(s);
 		encode(name, dir, steps);
 		fclose(f);
 	}
