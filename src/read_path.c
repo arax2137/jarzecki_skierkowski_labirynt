@@ -12,6 +12,18 @@ char direction(FILE* in, int x, int y, struct maze m) {
 	return 'c';
 }
 
+char end_direction(FILE* in, int x, int y, struct maze m) {
+	if (getChr(in, y, x + 1, m) == 'K')
+		return 'r';
+	else if (getChr(in, y, x - 1, m) == 'K')
+		return 'l';
+	else if (getChr(in, y + 1, x, m) == 'K')
+		return 'd';
+	else if (getChr(in, y - 1, x, m) == 'K')
+		return 'u';
+	return 'c';
+}
+
 int last_step(FILE* in, int x, int y, struct maze m) {
 	if (getChr(in, y + 1, x, m) == 'K' || getChr(in, y - 1, x, m) == 'K' || getChr(in, y, x - 1, m) == 'K' || getChr(in, y, x + 1, m) == 'K')
 		return 1;
@@ -26,7 +38,8 @@ int read_path(FILE* in,struct maze m)
 	out = fopen("kroki.txt", "w");
 	char kierunek = baseDirection(m);
 	char kierunek_nastepny;
-
+	char kierunek_koncowy;
+	
 	int x = m.start_x;
 	int y = m.start_y;
 	fprintf(out, "START\n");
@@ -36,118 +49,184 @@ int read_path(FILE* in,struct maze m)
 	
 	while (!last_step(in,x,y,m))
 	{
-		switch (kierunek) {
-		case 'r':
-			count_steps = 0;
-			while (getChr(in, y, x, m) != 'X' && getChr(in, y, x, m) != '2' && getChr(in, y, x, m) != 'K') {
-				replaceChr(in, y, x, '.', m);
+			switch (kierunek) {
+	case 'r':
+		count_steps = 0;
+		while (getChr(in, y, x, m) != 'X' && getChr(in, y, x, m) != '2' && getChr(in, y, x, m) != 'K') {
+			replaceChr(in, y, x, '.', m);
+			count_steps++;
+		if (getChr(in, y, x + 1, m) == 'K')
 				count_steps++;
-				if (getChr(in, y + 1, x, m) == 'K' || getChr(in, y - 1, x, m) == 'K' || getChr(in, y, x - 1, m) == 'K' || getChr(in, y, x + 1, m) == 'K')
-					count_steps++;
-				if (direction(in, x, y, m) != 'r' && direction(in, x, y, m) != 'c')
-					break;
-				else if (getChr(in, y, x + 1, m) != 'X' && getChr(in, y, x + 1, m) != '2')
-					x++;
-				else
-					break;
-			}
-			kierunek_nastepny = direction(in, x, y, m);
-			fprintf(out, "FORWARD %i\n", count_steps-1);
-			switch (kierunek_nastepny) {
-			case 'u':
-				fprintf(out, "TURN LEFT\n");
+			if (direction(in, x, y, m) != 'r' && direction(in, x, y, m) != 'c')
 				break;
-			case 'd':
-				fprintf(out, "TURN RIGHT\n");
-				break;
-			}
-			kierunek = direction(in, x, y, m);
-			break;
-		case 'l':
-			count_steps = 0;
-			while (getChr(in, y, x, m) != 'X' && getChr(in, y, x, m) != '2' && getChr(in, y, x, m) != 'K') {
-				replaceChr(in, y, x, '.', m);
-				count_steps++;
-				if (getChr(in, y + 1, x, m) == 'K' || getChr(in, y - 1, x, m) == 'K' || getChr(in, y, x - 1, m) == 'K' || getChr(in, y, x + 1, m) == 'K')
-					count_steps++;
-				if (direction(in, x, y, m) != 'l' && direction(in, x, y, m) != 'c')
-					break;
-				else if (getChr(in, y, x -1, m) != 'X' && getChr(in, y, x - 1, m) != '2')
-					x--;
-				else
-					break;
-			}
-			kierunek_nastepny = direction(in, x, y, m);
-			fprintf(out, "FORWARD %i\n", count_steps-1);
-			switch (kierunek_nastepny) {
-			case 'u':
-				fprintf(out, "TURN RIGHT\n");
-				break;
-			case 'd':
-				fprintf(out, "TURN LEFT\n");
-				break;
-			}
-			kierunek = direction(in, x, y, m);
-			break;
-		case 'u':
-			count_steps = 0;
-			while (getChr(in, y, x, m) != 'X' && getChr(in, y, x, m) != '2' && getChr(in, y, x, m) != 'K') {
-				replaceChr(in, y, x, '.', m);
-				count_steps++;
-				if (getChr(in, y + 1, x, m) == 'K' || getChr(in, y - 1, x, m) == 'K' || getChr(in, y, x - 1, m) == 'K' || getChr(in, y, x + 1, m) == 'K')
-					count_steps++;
-				if (getChr(in, y + 1, x, m) == 'K' || getChr(in, y - 1, x, m) == 'K' || getChr(in, y, x - 1, m) == 'K' || getChr(in, y, x + 1, m) == 'K')
-					count_steps++;
-				if (direction(in, x, y, m) != 'u' && direction(in, x, y, m) != 'c')
-					break;
-				else if (getChr(in, y - 1, x, m) != 'X' && getChr(in, y - 1, x, m) != '2')
-					y--;
-				else
-					break;
-			}
-			kierunek_nastepny = direction(in, x, y, m);
-			fprintf(out, "FORWARD %i\n", count_steps -1);
-			switch (kierunek_nastepny) {
-			case 'r':
-				fprintf(out, "TURN RIGHT\n");
-				break;
-			case 'l':
-				fprintf(out, "TURN LEFT\n");
-				break;
-			}
-			kierunek = direction(in, x, y, m);
-			break;
-		case 'd':
-			count_steps = 0;
-			while (getChr(in, y, x, m) != 'X' && getChr(in, y, x, m) != '2' && getChr(in, y, x, m) != 'K') {
-				replaceChr(in, y, x, '.', m);
-				count_steps++;
-				if (getChr(in, y + 1, x, m) == 'K' || getChr(in, y - 1, x, m) == 'K' || getChr(in, y, x - 1, m) == 'K' || getChr(in, y, x + 1, m) == 'K')
-					count_steps++;
-			if (direction(in, x, y, m) != 'd' && direction(in, x, y, m) != 'c')
-					break;
-			else if (getChr(in, y+1, x, m) != 'X' && getChr(in, y+1, x , m) != '2')
-				y++;
+			else if (getChr(in, y, x + 1, m) != 'X' && getChr(in, y, x + 1, m) != '2')
+				x++;
 			else
 				break;
+		}
+		kierunek_nastepny = direction(in, x, y, m);
+		
+		fprintf(out, "FORWARD %i\n", count_steps-1);
+
+		if (end_direction(in, x, y, m) != 'c') {
+			kierunek_koncowy = end_direction(in, x, y, m);
+			switch (kierunek_koncowy)
+			{
+			case 'u':
+				fprintf(out, "TURN LEFT\n");
+				fprintf(out, "FORWARD 1\n");
+				break;
+			case 'd':
+				fprintf(out, "TURN RIGHT\n");
+				fprintf(out, "FORWARD 1\n");
+				break;
 			}
-			kierunek_nastepny = direction(in, x, y, m);
-			fprintf(out, "FORWARD %i\n", count_steps -1);
-			switch (kierunek_nastepny) {
+		}
+
+		switch (kierunek_nastepny) {
+		case 'u':
+			fprintf(out, "TURN LEFT\n");
+			break;
+		case 'd':
+			fprintf(out, "TURN RIGHT\n");
+			break;
+		}
+		kierunek = direction(in, x, y, m);
+		break;
+	case 'l':
+		count_steps = 0;
+		while (getChr(in, y, x, m) != 'X' && getChr(in, y, x, m) != '2' && getChr(in, y, x, m) != 'K') {
+			replaceChr(in, y, x, '.', m);
+			count_steps++;
+			if (getChr(in, y, x - 1, m) == 'K')
+				count_steps++;
+			if (direction(in, x, y, m) != 'l' && direction(in, x, y, m) != 'c')
+				break;
+			else if (getChr(in, y, x -1, m) != 'X' && getChr(in, y, x - 1, m) != '2')
+				x--;
+			else
+				break;
+		}
+		kierunek_nastepny = direction(in, x, y, m);
+		
+		fprintf(out, "FORWARD %i\n", count_steps - 1);
+
+		if (end_direction(in, x, y, m) != 'c') {
+			kierunek_koncowy = end_direction(in, x, y, m);
+			switch (kierunek_koncowy)
+			{
+			case 'u':
+				fprintf(out, "TURN RIGHT\n");
+				fprintf(out, "FORWARD 1\n");
+				break;
+			case 'd':
+				fprintf(out, "TURN LEFT\n");
+				fprintf(out, "FORWARD 1\n");
+				break;
+			}
+		}
+
+		switch (kierunek_nastepny) {
+		case 'u':
+			fprintf(out, "TURN RIGHT\n");
+			break;
+		case 'd':
+			fprintf(out, "TURN LEFT\n");
+			break;
+		}
+		kierunek = direction(in, x, y, m);
+		break;
+	case 'u':
+		count_steps = 0;
+		while (getChr(in, y, x, m) != 'X' && getChr(in, y, x, m) != '2' && getChr(in, y, x, m) != 'K') {
+			replaceChr(in, y, x, '.', m);
+			count_steps++;
+			if (getChr(in, y - 1, x, m) == 'K')
+				count_steps++;
+			if (getChr(in, y + 1, x, m) == 'K' || getChr(in, y - 1, x, m) == 'K' || getChr(in, y, x - 1, m) == 'K' || getChr(in, y, x + 1, m) == 'K')
+				count_steps++;
+			if (direction(in, x, y, m) != 'u' && direction(in, x, y, m) != 'c')
+				break;
+			else if (getChr(in, y - 1, x, m) != 'X' && getChr(in, y - 1, x, m) != '2')
+				y--;
+			else
+				break;
+		}
+		kierunek_nastepny = direction(in, x, y, m);
+		
+		fprintf(out, "FORWARD %i\n", count_steps -1);
+
+		if (end_direction(in, x, y, m) != 'c') {
+			kierunek_koncowy = end_direction(in, x, y, m);
+			switch (kierunek_koncowy)
+			{
+			case 'r':
+				fprintf(out, "TURN RIGHT\n");
+				fprintf(out, "FORWARD 1\n");
+				break;
+			case 'l':
+				fprintf(out, "TURN LEFT\n");
+				fprintf(out, "FORWARD 1\n");
+				break;
+			}
+		}
+
+		switch (kierunek_nastepny) {
+		case 'r':
+			fprintf(out, "TURN RIGHT\n");
+			break;
+		case 'l':
+			fprintf(out, "TURN LEFT\n");
+			break;
+		}
+		kierunek = direction(in, x, y, m);
+		break;
+	case 'd':
+		count_steps = 0;
+		while (getChr(in, y, x, m) != 'X' && getChr(in, y, x, m) != '2' && getChr(in, y, x, m) != 'K') {
+			replaceChr(in, y, x, '.', m);
+			count_steps++;
+			if (getChr(in, y + 1, x, m) == 'K')
+				count_steps++;
+		if (direction(in, x, y, m) != 'd' && direction(in, x, y, m) != 'c')
+				break;
+		else if (getChr(in, y+1, x, m) != 'X' && getChr(in, y+1, x , m) != '2')
+			y++;
+		else
+			break;
+		}
+		kierunek_nastepny = direction(in, x, y, m);
+		
+		fprintf(out, "FORWARD %i\n", count_steps -1);
+
+		if (end_direction(in, x, y, m) != 'c') {
+			kierunek_koncowy = end_direction(in, x, y, m);
+			switch (kierunek_koncowy)
+			{
 			case 'r':
 				fprintf(out, "TURN LEFT\n");
+				fprintf(out, "FORWARD 1\n");
 				break;
 			case 'l':
 				fprintf(out, "TURN RIGHT\n");
+				fprintf(out, "FORWARD 1\n");
 				break;
 			}
-			kierunek = direction(in, x, y, m);
+		}
+		switch (kierunek_nastepny) {
+		case 'r':
+			fprintf(out, "TURN LEFT\n");
+			break;
+		case 'l':
+			fprintf(out, "TURN RIGHT\n");
 			break;
 		}
-		steps++;
-		if (getChr(in, y, x, m) == 'K')
-			break;
-	} 
+		kierunek = direction(in, x, y, m);
+		break;
+	}
+	if (getChr(in, y, x, m) == 'K')
+		break;
+}
 	fprintf(out, "STOP");
 	fclose(out);
 	return steps;
