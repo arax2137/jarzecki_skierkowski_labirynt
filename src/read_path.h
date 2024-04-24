@@ -3,6 +3,8 @@
 
 char direction(FILE* in,int x,int y, struct maze m);
 
+char end_direction(FILE* in, int x, int y, struct maze m);
+
 int read_path(FILE* in, struct maze m);
 
 int last_step(FILE* in, int x, int y, struct maze m);
