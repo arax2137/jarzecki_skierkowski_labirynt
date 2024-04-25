@@ -65,8 +65,8 @@ int main(int argc, char *argv[]){
 		int steps;
 		steps = read_path(f, s);
 		char dir;
-		dir = baseDirection(s);
-		encode(name, dir, steps);
+		//dir = baseDirection(s);
+		//encode(name, dir, steps);
 		fclose(f);
 	}
 	
